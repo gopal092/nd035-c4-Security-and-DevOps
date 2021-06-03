@@ -29,8 +29,6 @@ public class CartControllerTest {
     private CartRepository cartRepository;
     @Mock
     private ItemRepository itemRepository;
-    @Mock
-    private Receiver splunkReceiver;
     @InjectMocks
     private CartController cartController;
     @Test

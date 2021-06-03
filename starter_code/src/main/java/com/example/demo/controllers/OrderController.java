@@ -2,9 +2,8 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
-import com.example.demo.model.requests.SplunkArgs;
-import com.splunk.Args;
-import com.splunk.Receiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,38 +23,32 @@ public class OrderController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private OrderRepository orderRepository;
-	@Autowired
-	private Receiver splunkReceiver;
-	private final Args args = new Args();
-	
+	private final Logger logger = LoggerFactory.getLogger(CartController.class);
 	@PostMapping("/submit/{username}")
 	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
-		SplunkArgs.setSourceType(args, "OrderController");
-		splunkReceiver.log("main", args, "Creating Orders for User: "+username);
+		logger.info("Creating Orders for User: "+username);
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			splunkReceiver.log("main", args, "user "+username+" not found");
+			logger.info("user "+username+" not found");
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
 		orderRepository.save(order);
-		splunkReceiver.log("main", args, "Done ");
+		logger.info("Done ");
 		return ResponseEntity.ok(order);
 	}
 	
 	@GetMapping("/history/{username}")
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
-		SplunkArgs.setSourceType(args, "OrderController");
-		splunkReceiver.log("main", args, "Gettomg orders for User: "+username);
+		logger.info("Getting orders for User: "+username);
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			splunkReceiver.log("main", args, "user "+username+" not found");
+			logger.info("user "+username+" not found");
 			return ResponseEntity.notFound().build();
 		}
-		splunkReceiver.log("main", args, "Done ");
+		logger.info("Done ");
 		return ResponseEntity.ok(orderRepository.findByUser(user));
 	}
 }

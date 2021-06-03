@@ -27,8 +27,6 @@ public class OrderControllerTest {
     private UserRepository userRepository;
     @Mock
     private OrderRepository orderRepository;
-    @Mock
-    private Receiver splunkReceiver;
     @InjectMocks
     private OrderController orderController;
 

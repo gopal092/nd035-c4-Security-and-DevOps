@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.splunk.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -19,18 +18,6 @@ public class SareetaApplication {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder(){
 		return new BCryptPasswordEncoder();
-	}
-	@Bean
-	public static Receiver getSplunkService() {
-		HttpService.setSslSecurityProtocol(SSLSecurityProtocol.TLSv1_2);
-		Map<String, Object> connectionArgs = new HashMap<>();
-		connectionArgs.put("host", "127.0.0.1");
-		connectionArgs.put("port", 8089);
-		connectionArgs.put("scheme", "https");
-		connectionArgs.put("username", "gopal1991");
-		connectionArgs.put("password", "G0p@l!!00!");
-		Service splunkService = Service.connect(connectionArgs);
-		return splunkService.getReceiver();
 	}
 	public static void main(String[] args) throws IOException{
 		SpringApplication.run(SareetaApplication.class, args);

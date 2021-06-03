@@ -26,8 +26,6 @@ public class UserControllerTest {
     private CartRepository cartRepository;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Mock
-    private Receiver splunkReceiver;
     @InjectMocks
     private UserController userController;
 

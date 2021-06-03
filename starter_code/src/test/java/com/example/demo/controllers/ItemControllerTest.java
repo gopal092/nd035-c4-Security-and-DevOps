@@ -20,8 +20,6 @@ import java.util.Optional;
 public class ItemControllerTest {
     @Mock
     private ItemRepository itemRepository;
-    @Mock
-    private Receiver splunkReceiver;
     @InjectMocks
     private ItemController itemController;
     @Test

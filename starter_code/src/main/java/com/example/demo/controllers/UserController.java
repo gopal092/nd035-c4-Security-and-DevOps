@@ -1,9 +1,7 @@
 package com.example.demo.controllers;
 
 
-import com.example.demo.model.requests.SplunkArgs;
 import com.splunk.Args;
-import com.splunk.Receiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +32,6 @@ public class UserController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
-	private Receiver splunkReceiver;
 	private final Args args = new Args();
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -47,18 +42,18 @@ public class UserController {
 	
 	@GetMapping("/{username}")
 	public ResponseEntity<User> findByUserName(@PathVariable String username) {
-		SplunkArgs.setSourceType(args, "UserController");
-		splunkReceiver.log("main", args, "called findByUserName by user: "+username);
 		logger.info("called findByUserName by user: "+username);
 		User user = userRepository.findByUsername(username);
-		splunkReceiver.log("main", args, "Got the user: "+username);
+		if(user == null){
+			logger.info("User: "+username+" not found.");
+		}else{
+			logger.info("Got the user: "+username);
+		}
 		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
 	}
 	
 	@PostMapping("/create")
 	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
-		SplunkArgs.setSourceType(args, "UserController");
-		splunkReceiver.log("main", args,"called createUser()");
 		logger.info("called createUser()");
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
@@ -67,14 +62,12 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword().length() < 7
 		|| !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
-			splunkReceiver.log("main", args,"Entered password and confirm passwords do not match. Cannot create the User "+createUserRequest.getUsername());
 			logger.error("Entered password and confirm passwords do not match. Cannot create the User "+createUserRequest.getUsername());
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
 		logger.info("User "+createUserRequest.getUsername()+" created successfully.");
-		splunkReceiver.log("main", args, "User "+createUserRequest.getUsername()+" created successfully.");
 		return ResponseEntity.ok(user);
 	}
 }
