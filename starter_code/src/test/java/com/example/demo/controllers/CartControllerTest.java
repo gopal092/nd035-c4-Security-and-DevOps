@@ -7,6 +7,7 @@ import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.ItemRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.ModifyCartRequest;
+import com.splunk.Receiver;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ public class CartControllerTest {
     private CartRepository cartRepository;
     @Mock
     private ItemRepository itemRepository;
+    @Mock
+    private Receiver splunkReceiver;
     @InjectMocks
     private CartController cartController;
     @Test

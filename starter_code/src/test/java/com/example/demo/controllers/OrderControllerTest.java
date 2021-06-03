@@ -6,6 +6,7 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.UserOrder;
 import com.example.demo.model.persistence.repositories.OrderRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
+import com.splunk.Receiver;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,8 @@ public class OrderControllerTest {
     private UserRepository userRepository;
     @Mock
     private OrderRepository orderRepository;
+    @Mock
+    private Receiver splunkReceiver;
     @InjectMocks
     private OrderController orderController;
 

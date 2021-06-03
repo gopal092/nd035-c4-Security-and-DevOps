@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.model.persistence.Item;
 import com.example.demo.model.persistence.repositories.ItemRepository;
+import com.splunk.Receiver;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class ItemControllerTest {
     @Mock
     private ItemRepository itemRepository;
+    @Mock
+    private Receiver splunkReceiver;
     @InjectMocks
     private ItemController itemController;
     @Test
